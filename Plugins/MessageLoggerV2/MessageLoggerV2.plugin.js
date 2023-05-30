@@ -3030,7 +3030,7 @@ module.exports = class MessageLoggerV2 {
 		 const cond = (this.settings.alwaysNotifChannel && this.selectedChannel && this.selectedChannel.id == channel.id) ? "channel" : "guild";
 		 console.log(cond);
 		 if (editOrDel == 1) {
-			 if (guild ? this.settings.toastToggles.deleted && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser) : this.settings.toastTogglesDMs.deleted && !isLocalUser) {
+			 if (guild ? this.settings.toastToggles.deleted && ( ((this.settings.alwaysNotifChannel && this.selectedChannel && this.selectedChannel.id == channel.id) || (this.settings.alwaysNotifGuild && guild && this.selectedChannel.guild_id == guild.id)) || (!this.settings.notifOnlyWhitelist || (this.settings.notifOnlyWhitelist && this.settings.notificationWhitelist.indexOf(channel.id) !== -1 || (guild && this.settings.notificationWhitelist.indexOf(guild.id) !== -1))  && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser)))  && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser) : this.settings.toastTogglesDMs.deleted && !isLocalUser) {
 				if (this.settings.useNotificationsInstead) {
 				  XenoLib.Notifications.danger(`Message deleted from ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
 					onClick: () => this.openWindow('deleted'),
@@ -3048,7 +3048,7 @@ module.exports = class MessageLoggerV2 {
 			  }
 		 }
 		 else if (editOrDel == 2) {
-			if (guild ? this.settings.toastToggles.edited && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser) : this.settings.toastTogglesDMs.edited && !isLocalUser) {
+			if (guild ? this.settings.toastToggles.edited && ( ((this.settings.alwaysNotifChannel && this.selectedChannel && this.selectedChannel.id == channel.id) || (this.settings.alwaysNotifGuild && guild && this.selectedChannel.guild_id == guild.id)) || (!this.settings.notifOnlyWhitelist || (this.settings.notifOnlyWhitelist && this.settings.notificationWhitelist.indexOf(channel.id) !== -1 || (guild && this.settings.notificationWhitelist.indexOf(guild.id) !== -1))  && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser)))  && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser) : this.settings.toastTogglesDMs.edited && !isLocalUser) {
 			  if (this.settings.useNotificationsInstead) {
 				XenoLib.Notifications.info(`Message edited in ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
 				  onClick: () => this.openWindow('edited'),
@@ -3240,7 +3240,7 @@ module.exports = class MessageLoggerV2 {
           if (!this.deletedChatMessagesCount[channel.id]) this.deletedChatMessagesCount[channel.id] = 0;
           if (!this.selectedChannel || this.selectedChannel.id != channel.id) this.deletedChatMessagesCount[channel.id]++;
         }
-        if (!notificationsBlacklisted) {
+        if (!notificationsBlacklisted && ( ((this.settings.alwaysNotifChannel && this.selectedChannel && this.selectedChannel.id == channel.id) || (this.settings.alwaysNotifGuild && guild && this.selectedChannel.guild_id == guild.id)) || (!this.settings.notifOnlyWhitelist || (this.settings.notifOnlyWhitelist && this.settings.notificationWhitelist.indexOf(channel.id) !== -1 || (guild && this.settings.notificationWhitelist.indexOf(guild.id) !== -1))  && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser))))  {
           if (guild ? this.settings.toastToggles.deleted && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser) : this.settings.toastTogglesDMs.deleted && !isLocalUser) {
             if (this.settings.useNotificationsInstead) {
               XenoLib.Notifications.danger(`Message deleted from ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
